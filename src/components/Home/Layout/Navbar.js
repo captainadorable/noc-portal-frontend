@@ -61,7 +61,7 @@ export const Navbar = () => {
         </div>
       </div>
 
-      <div className="hidden lg:flex lg:flex-row lg:justify-between lg:items-center py-4 px-12 bg-[#ffecd6] sticky top-0">
+      <div className="hidden lg:flex lg:flex-row lg:justify-between lg:items-center py-4 px-12 bg-[#f7eee5] sticky top-0">
         <div className="width-1/3"><img src="/logo.png" width="167" height="55" alt="Logo" className="hover:cursor-pointer" onClick={LogoOnClickHandler}></img></div>
         <div className="width-1/3 pt-4 flex flex-row space-x-10 text-xl">
           {NavbarItems.map((item) => (

@@ -9,7 +9,7 @@ const tickedwords = (text) => {
 }
 export const Hero = () => {
     return (
-        <div className="bg-[#ffecd6] h-screen w-full px-32 justify-center pt-64 flex space-x-10 ">
+        <div className="bg-[#f7eee5] h-screen w-full px-32 justify-center pt-72 flex space-x-10 ">
             <div className="w-2/6">
                 <img src="/images/hero1_avatar.svg" alt="Avatar1_hero" />
             </div>  

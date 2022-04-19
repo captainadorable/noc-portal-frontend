@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Footer } from "./Footer";
 import { useContext } from 'react';
 import { SessionContext } from '../../../index'
+import { Link } from "react-router-dom";
 
 export const Navbar = () => {
   const { session } = useContext(SessionContext)
@@ -25,6 +26,25 @@ export const Navbar = () => {
     {
       name: "Paketler",
       href: "/pricing",
+      last: true
+    }
+  ];
+  const NavbarItemsMobile = [
+    {
+      name: "Ders",
+      href: "/lesson",
+    },
+    {
+      name: "Pomodoro",
+      href: "/pomodoro",
+    },
+    {
+      name: "Paketler",
+      href: "/pricing",
+    },
+    {
+      name: "Giriş Yap",
+      href: "/login",
       last: true
     }
   ];
@@ -53,8 +73,8 @@ export const Navbar = () => {
             </div>
           </div>
           <div className="flex flex-col self-start pl-8 text-[#9ca3af] space-y-4">
-              {NavbarItems.map((item) => (
-                  <div key={item.name}><a href={item.href} onClick={() => sidebarToggle(false)}>{item.name}</a></div>
+              {NavbarItemsMobile.map((item) => (
+                  <div key={item.name}><Link to={item.href} onClick={() => sidebarToggle(false)}>{item.name}</Link></div>
               ))}
           </div>
           <Footer /> 
@@ -66,7 +86,7 @@ export const Navbar = () => {
         <div className="width-1/3 pt-4 flex flex-row space-x-10 text-xl">
           {NavbarItems.map((item) => (
             <div key={item.name} className="flex flex-row pb-4 space-x-10" style={{"fontFamily" : "Lato", "fontWeight": "normal"}}>
-              <a href={item.href}>{item.name}</a>
+              <Link to={item.href}>{item.name}</Link>
               <div className={item.last === true ? "hidden" : "visible"}>|</div>
             </div>
           ))}

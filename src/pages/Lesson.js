@@ -5,7 +5,7 @@ import { Teacher } from "../components/Lesson/Teacher/Teacher";
 
 import { ContextProvider } from "../ContextVideoChat";
 import { SessionContext } from "..";
-export const Lesson = ({ State }) =>{
+export const Lesson = () =>{
     const { session } = useContext(SessionContext);
     if (session === null) {
         window.location.replace("/login")

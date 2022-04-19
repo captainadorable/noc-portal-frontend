@@ -37,7 +37,7 @@ const ContextProvider = ({ children }) => {
 
 
     if (session === null) {
-        window.location.replace("/")
+        window.location.replace("/login")
     }
 
     useEffect(() => {

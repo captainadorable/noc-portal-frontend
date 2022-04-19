@@ -7,8 +7,7 @@ export const Login = () => {
         const data = await axios.post(`${process.env.REACT_APP_SERVER_IP}/api/v1/auth/google`, { token: googleData.tokenId }, { withCredentials: true })
         console.log(googleData)
         if (data.data.error) return
-
-        window.location.replace("/");
+        else return window.location.replace("/");
     };
 
     return(

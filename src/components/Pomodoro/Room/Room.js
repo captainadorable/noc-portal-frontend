@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import { PomodoroContext } from '../../../ContextPomodoro';
 import { SessionContext } from "../../../index";
 import { PeerCard } from './PeerCard';
@@ -13,10 +13,7 @@ export const Room = () => {
     }, [peers]);
 
     const { session } = useContext(SessionContext);
-    if (session === null) {
-        window.location.replace("/login")
-        return 
-    }
+    if (session === null) return <Navigate to="/login"/>
     return (
         <div className="flex flex-col items-center pb-36 h-1/2 pt-36">
             <div className="flex flex-col space-y-8 items-center">

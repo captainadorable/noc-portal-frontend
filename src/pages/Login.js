@@ -1,5 +1,6 @@
 import { Layout } from "../components/Home/Layout";
 import { GoogleLogin } from 'react-google-login'
+import { Navigate } from "react-router-dom";
 import axios from 'axios'
 
 export const Login = () => {
@@ -7,7 +8,7 @@ export const Login = () => {
         const data = await axios.post(`${process.env.REACT_APP_SERVER_IP}/api/v1/auth/google`, { token: googleData.tokenId }, { withCredentials: true })
         console.log(googleData)
         if (data.data.error) return
-        else return window.location.replace("/");
+        else return <Navigate to="/"/>
     };
 
     return(

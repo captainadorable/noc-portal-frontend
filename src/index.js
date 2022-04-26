@@ -6,7 +6,6 @@ import axios from 'axios'
 
 import { Home } from './pages/Home';
 import { Pomodoro } from './pages/Pomodoro';
-import { PomodoroRoom } from './pages/PomodoroRoom'
 import { Pricing } from './pages/Pricing';
 import { Lesson } from './pages/Lesson';
 import { Page404 } from './pages/Page404'
@@ -48,7 +47,6 @@ root.render(
       <Routes>
           <Route path="/" element={<Home />}/>
           <Route path="/pomodoro" element={<Pomodoro />}/>
-          <Route path="/pomodoro/:roomId" element={<PomodoroRoom />}/>
           <Route path="/pricing" element={<Pricing />}/>
           <Route path="/lesson" element={<Lesson />}/>
           <Route path="/login" element={<Login />}/>

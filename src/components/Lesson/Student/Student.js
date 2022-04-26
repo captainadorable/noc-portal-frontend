@@ -1,70 +1,72 @@
 import { useContext, useEffect, useState } from 'react';
-import { CallScreen } from '../CallScreen/CallScreen';
 import { VideoChatContext } from '../../../ContextVideoChat';
+import { Layout } from '../../Home/Layout';
+import { Call } from '../Call/Call';
+import { io } from 'socket.io-client';
+import axios from 'axios'
+
+const socket = io(`${process.env.REACT_APP_SERVER_IP}`);
+
 export const Student = () => {
-    const { myVideoRef, callUser, callWaiting, callAccepted, call, Me } = useContext(VideoChatContext)
-
-    const [waitingCalls, setWaitingCalls] = useState([]);
-
-    const CallHandler = (event) => {
-        event.preventDefault()
-
-        const id = event.target.id
-        callUser(id)
-    }
-
-    const CannotCallHandler = (event) => {
+    const { answerCall, myVideoRef, call, setCall } = useContext(VideoChatContext);
+    const [calls, setCalls] = useState([]);
+    
+    const handleForm = (event) => {
         event.preventDefault();
-        
-        console.log("Cant call room is full.")
-    }
 
-    useEffect(async () => {
-        const data = await fetch(`${process.env.REACT_APP_SERVER_IP}/api/getWaitingCalls`).then(res => res.json())
-        setWaitingCalls(exdata => data.waitingCalls)
-    }, [])
+        let id = event.target.elements.connectid.value    
+
+        if(id === "") return
+
+        socket.emit("validateRoom", (id))
+    }
 
     useEffect(() => {
-        const timer = setInterval(async () => {
-            const data = await fetch(`${process.env.REACT_APP_SERVER_IP}/api/getWaitingCalls`).then(res => res.json())
-            setWaitingCalls(exdata => data.waitingCalls)
-        }, 1000)
-        return () => clearInterval(timer);
+        socket.on("validateRoom", (state, id) => {
+            if (state) {
+                answerCall(id);
+            }
+            else {
+                console.log("Room Not Found")
+            }
+        });
     }, [])
 
+    const getCalls = async () => {
+        if (!call.active) {
+            const data = await axios.get(`${process.env.REACT_APP_SERVER_IP}/api/getCalls`, { withCredentials: true })
+            setCalls(ex => data.data)
+        }
+    }
 
-    if (callWaiting && !callAccepted) {
-        return (
-            <div>Waiting</div>
-        )
-    }
-    if (callAccepted && call) {
-        return (
-            <CallScreen />
-        )
-    }
-    else {
-        return (
-            <div className='flex flex-col items-center pt-24 space-y-8'>
-                <div className='flex flex-col items-center space-y-8'>
-                    <div className='text-4xl'>
-                        {Me.name}
-                    </div>
-                    <video ref={myVideoRef} autoPlay muted width="500"></video>
-                </div>
-                <div className='flex flex-row space-x-4 pt-12'>
-                    {waitingCalls.map(call => (
-                        <form onSubmit={call.users.length === 2 ? CannotCallHandler : CallHandler} key={call.initiator.id} id={call.initiator.id} className="flex flex-col items-center space-y-4 bg-blue-300 text-white w-48 pt-4 shadow-xl rounded-lg">
-                            <div className='text-lg w-36 text-center truncate'>{call.initiator.name}</div>
-                            <div>Ders: {call.lesson}</div>
-                            <div>{call.users.length}/2</div>
-                            <div className='pb-4'>
-                                <button className='bg-white shadow text-black w-24 px-4 py-2' {...call.users.length === 2 ? "disabled" : ""}>Katıl</button>
-                            </div>
-                        </form>
+    useEffect(() => {
+        getCalls()
+        
+        const timer = setInterval(() => {
+            getCalls()
+        }, 1500)
+
+        return () => clearInterval(timer)
+    }, []);
+
+    if (call.active) return <Call></Call>
+    else return (
+        <Layout>
+            <div className="flex flex-col items-center justify-center space-y-16">
+                <div>Öğrenci</div>
+                <video ref={myVideoRef} width={400} autoPlay muted></video>
+                <div className="flex flex-col">
+                    {calls.length === 0 ? <div>Henüz bekleyen bir arama yok</div>: calls.map(call => (
+                        <>
+                            <div className='text-2xl'>ID: {call.id}</div>
+                        </>
                     ))}
                 </div>
+                <form onSubmit={handleForm} className="flex flex-col space-y-4">
+                    <input name="connectid" type="text" placeholder="ID" className="border-2 shadow p-2" />
+                    <button className="bg-blue-300 text-white p-4 rounded-lg">Ara</button>
+                </form>
             </div>
-        )
-    }
+        </Layout>
+    );
 };

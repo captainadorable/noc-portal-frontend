@@ -1,49 +1,29 @@
 import { useContext } from 'react';
-import { CallScreen } from '../CallScreen/CallScreen';
 import { VideoChatContext } from '../../../ContextVideoChat';
+import { Layout } from '../../Home/Layout';
+import { Call } from '../Call/Call';
+
 
 export const Teacher = () => {
-    const { setLesson, waitForCall, state, myVideoRef } = useContext(VideoChatContext);
+    const { createCall, myVideoRef, remoteVideoRef, call, setCall } = useContext(VideoChatContext);
 
-    const HandleCreateRoom = (event) => {
+    const handleForm = (event) => {
         event.preventDefault();
-
-        const lesson = event.target.elements.lesson.value;
+        createCall();
         
-        if (lesson === "") return;
-
-        waitForCall();
-    };
-
-    const HandleLessonChange = (event) => {
-        event.preventDefault();
-
-        const lesson = event.target.value;
-
-        if (!lesson) return;
-
-        setLesson(lesson);
-    };
-
-    if (state === 'waitingCall') {
-        return <CallScreen />;
     }
-
-    return (
-        <div className="flex flex-col items-center pt-24 space-y-8 w-1/2">
-            <video ref={myVideoRef} autoPlay muted width="500"></video>
-            <form className="flex flex-col items-center w-3/4 space-y-4" onSubmit={HandleCreateRoom}>
-                <input
-                    name="lesson"
-                    type="text"
-                    placeholder="Yapılacak Ders"
-                    className="w-4/6 p-2"
-                    onChange={HandleLessonChange}
-                />
-                <button className="bg-blue-200 text-white px-4 py-2 rounded-lg text-xl hover:bg-blue-300">
-                    Oda oluştur
-                </button>
-            </form>
-        </div>
-    );
+    if (call.active) return <Call></Call>
+    else return (
+        <Layout>
+            <div className="flex flex-col items-center justify-center space-y-16">
+                <div>Öğretmen</div>
+                <video ref={myVideoRef} width={400} autoPlay muted></video>
+                <video ref={remoteVideoRef} width={400} autoPlay muted className='hidden'></video>
+                <form onSubmit={handleForm} className="flex flex-col space-y-4">
+                    <input name="connectid" type="text" placeholder="Yapılacak ders" className="border-2 shadow p-2" />
+                    <button className="bg-blue-300 text-white p-4 rounded-lg">Arama Oluştur</button>
+                </form>
+            </div>
+        </Layout>
+    )
 };

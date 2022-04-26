@@ -6,7 +6,7 @@ export const Pomodoro = () =>{
     return(
         <Layout>
             <Introduction />        
-            <RoomList />
         </Layout>
     );
 }
+//<RoomList /> 

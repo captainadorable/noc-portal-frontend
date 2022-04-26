@@ -12,6 +12,7 @@ import { Lesson } from './pages/Lesson';
 import { Page404 } from './pages/Page404'
 import { Login } from './pages/Login';
 import { Profile } from './pages/Profile';
+import { StudentTest } from './components/Lesson/Student/StudentTest';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -20,17 +21,21 @@ export const SessionProvider = ({ children }) => {
   const [session, setSession] = useState({});
 
   const getSession = async () => {
-    const session = await axios.get(`${process.env.REACT_APP_SERVER_IP}/me`, { withCredentials: true })
-    console.log(session.data);
-    setSession(session.data);
+    try {
+      const session = await axios.get(`${process.env.REACT_APP_SERVER_IP}/me`, { withCredentials: true })
+      console.log(`Get Session`, session.data);
+      setSession(session.data);
+    }
+    catch (err){
+      console.log(err)
+      setSession(null);
+      return
+    }
+    
   }
   useEffect(() => {
     getSession();
   }, [])
-
-  useEffect(() => {
-    console.log("SESSION UPDATED", session)
-  }, [session]);
 
   return (
     <SessionContext.Provider value={{session}}>{children}</SessionContext.Provider>
@@ -48,6 +53,7 @@ root.render(
           <Route path="/lesson" element={<Lesson />}/>
           <Route path="/login" element={<Login />}/>
           <Route path="/profile" element={<Profile />}/>
+          <Route path="/test" element={<StudentTest />}/>
           <Route path="/*" element={<Page404 />}/>
       </Routes>
     </BrowserRouter>

@@ -26,7 +26,7 @@ export const PricingCard = ({CardName, CardColor, CardPrice}) => {
                 <DetailsComponent details="Sed scelerisque magna sit amet fedivs auctor dignissim."/>
             </div>
             <div className="pb-12">
-                <button class="bg-[#5065a5] text-white py-2 px-8 border border-blue-300 rounded-xl text-2xl">
+                <button className="bg-[#5065a5] text-white py-2 px-8 border border-blue-300 rounded-xl text-2xl">
                     Satın al
                 </button>
             </div>

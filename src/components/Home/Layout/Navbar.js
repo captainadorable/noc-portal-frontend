@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import { Footer } from "./Footer";
 import { useContext } from 'react';
 import { SessionContext } from '../../../index'
-import { Link, useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
-  const navigate = useNavigate()
 
   const { session } = useContext(SessionContext)
 
@@ -46,10 +44,6 @@ export const Navbar = () => {
     }
   ];
 
-  useEffect(() => {
-    console.log(session);
-  }, [session])
-
   return (
     <div>
       
@@ -71,7 +65,7 @@ export const Navbar = () => {
           </div>
           <div className="flex flex-col self-start pl-8 text-[#9ca3af] space-y-4">
               {NavbarItemsMobile.map((item) => (
-                  <div key={item.name}><Link to={item.href} onClick={() => sidebarToggle(false)}>{item.name}</Link></div>
+                  <div key={item.name}><a href={item.href} onClick={() => sidebarToggle(false)}>{item.name}</a></div> // DİKKAT BUG MAYBE
               ))}
           </div>
           <Footer /> 
@@ -79,17 +73,17 @@ export const Navbar = () => {
       </div>
 
       <div className="hidden lg:flex lg:flex-row lg:justify-between lg:items-center py-4 px-12 bg-[#f7eee5] sticky top-0">
-        <div className="width-1/3"><img src="/logo.png" width="167" height="55" alt="Logo" className="hover:cursor-pointer" onClick={() => navigate("/")}></img></div>
+        <div className="width-1/3"><img src="/logo.png" width="167" height="55" alt="Logo" className="hover:cursor-pointer" onClick={() => window.location.href = "/"}></img></div>
         <div className="width-1/3 pt-4 flex flex-row space-x-10 text-xl">
           {NavbarItems.map((item) => (
             <div key={item.name} className="flex flex-row pb-4 space-x-10" style={{"fontFamily" : "Lato", "fontWeight": "normal"}}>
-              <Link to={item.href}>{item.name}</Link>
+              <a href={item.href}>{item.name}</a>
               <div className={item.last === true ? "hidden" : "visible"}>|</div>
             </div>
           ))}
         </div>
         <div className="width-1/3">
-          <button onClick={() => navigate(session ? "/profile" : "/login")} class="bg-transparent hover:bg-blue-300 hover:text-white py-2 px-8 border border-blue-300 text-blue-300 hover:border-transparent rounded text-lg">
+          <button onClick={() => window.location.href = session ? "/profile" : "/login"} className="bg-transparent hover:bg-blue-300 hover:text-white py-2 px-8 border border-blue-300 text-blue-300 hover:border-transparent rounded text-lg">
             {session ? "Profil" : "Giriş yap"}
           </button>
         </div>

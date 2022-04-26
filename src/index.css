@@ -11,3 +11,23 @@ body {
     font-family: 'Red Hat Display';
     background-color: #f7eee5;
 }
+
+  /* width */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #121722; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #454a4d; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #575e62; 
+  }

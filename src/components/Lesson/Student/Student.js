@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { VideoChatContext } from '../../../ContextVideoChat';
 import { Layout } from '../../Home/Layout';
 import { Call } from '../Call/Call';
@@ -23,11 +24,30 @@ export const Student = () => {
 
     useEffect(() => {
         socket.on("validateRoom", (state, id) => {
-            if (state) {
+            if (state === true) {
                 answerCall(id);
             }
-            else {
-                console.log("Room Not Found")
+            else if (state === false) {
+                toast.error('Böyle bir oda bulunamadı!', {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    });
+            }
+            else if (state === "full") {
+                toast.error('Girmeye çalıştığınız oda dolu!', {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    });
             }
         });
     }, [])
@@ -54,7 +74,7 @@ export const Student = () => {
         <Layout>
             <div className="flex flex-col items-center justify-center space-y-16">
                 <div>Öğrenci</div>
-                <video ref={myVideoRef} width={400} autoPlay muted></video>
+                <video ref={myVideoRef} autoPlay muted className='h-80 w-96'></video>
                 <div className="flex flex-col">
                     {calls.length === 0 ? <div>Henüz bekleyen bir arama yok</div>: calls.map(call => (
                         <>

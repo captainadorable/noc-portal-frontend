@@ -23,8 +23,10 @@ const ContextProvider = ({ children, session }) => {
 
     const [mic, setMic] = useState(true);
     const [cam, setCam] = useState(true);
+    const [screen, setScreen] = useState(false);
 
     const [myStream, setMyStream] = useState();
+    const [myScreenStream, setMyScreenStream] = useState();
     const [userStream, setUserStream] = useState();
 
     const myVideoRef = useRef();
@@ -35,7 +37,7 @@ const ContextProvider = ({ children, session }) => {
     // Set local stream and remote stream. Wait for peer connection ontrack event.
     const runThat = async () => {
         let localStream = await navigator.mediaDevices
-            .getUserMedia({ video: { width: { min: '320' }, height: { min: '384' }, facingMode: "environment" }, audio: true })
+            .getUserMedia({ video: { facingMode: "environment" }, audio: true })
             .then((stream) => (myVideoRef.current.srcObject = stream));
         let remoteStream = new MediaStream();
 
@@ -50,6 +52,7 @@ const ContextProvider = ({ children, session }) => {
             event.streams[0].getTracks().forEach((track) => {
                 remoteStream.addTrack(track);
             });
+            console.log(remoteStream);
         };
 
         pc.ondatachannel = handleChannelCallback; // When chat channel open
@@ -62,7 +65,18 @@ const ContextProvider = ({ children, session }) => {
     var handleDataChannelMessageReceived = function (event) {
         console.log('dataChannel.OnMessage:', event);
         const data = JSON.parse(event.data);
-        setMessages((ex) => [...ex, { message: data.message, sender: data.sender }]);
+
+        if (data.screenShare) {
+            setScreen(data.screenShare);
+            return
+        }
+        else if (data.screenShare == false) {
+            setScreen(data.screenShare);
+            return
+        }
+        else {
+            setMessages((ex) => [...ex, { message: data.message, sender: data.sender }]);
+        }
     };
     var handleChannelCallback = function (event) {
         let datachan = event.channel;
@@ -85,8 +99,12 @@ const ContextProvider = ({ children, session }) => {
 
     useEffect(() => {
         console.log(messages);
+        console.log(myScreenStream)
     }, [messages]);
 
+    useEffect(() => {
+        console.log(userStream);
+    }, [userStream])
     const sendMessage = (message) => {
         let msg = {
             message: message,
@@ -166,6 +184,7 @@ const ContextProvider = ({ children, session }) => {
             if (state) {
                 setCall({ id: callId, active: true });
         
+
                 pc.onicecandidate = (event) => {
                     event.candidate && socket.emit("answerCandidates", { candidates: event.candidate.toJSON() })
                 };
@@ -248,6 +267,50 @@ const ContextProvider = ({ children, session }) => {
         console.log(videotrack.enabled);
     };
 
+    const createScreenShare = async () => {
+        
+
+        const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: { cursor: 'always' }, audio:true, })
+        setScreen(true)
+        setMyScreenStream(screenStream)
+
+        const sender = pc.getSenders()[1]
+        console.log(sender)
+        screenStream.getTracks().forEach(track => {
+            if (track.kind == "video") {
+                sender.replaceTrack(track)
+            }
+        })
+        myVideoRef.current.srcObject = screenStream;
+
+        screenStream.oninactive = () => {
+            stopScreenShare()
+        }
+
+        const data = { screenShare: true }
+        dc.send(JSON.stringify(data));
+
+
+
+    }
+
+    const stopScreenShare = async () => {
+        
+        const sender = pc.getSenders()[1]
+
+        myScreenStream?.getTracks().forEach(track => track.stop())
+        myStream.getTracks().forEach(track => {
+            if (track.kind == "video") {
+                sender.replaceTrack(track)
+            }
+        })
+
+        myVideoRef.current.srcObject = myStream;
+        setScreen(false);
+
+        const data = { screenShare: false }
+        dc.send(JSON.stringify(data));
+    }
     // Leave call
     const leaveCall = async () => {
         socket.emit("disconnectFromCall");
@@ -282,11 +345,14 @@ const ContextProvider = ({ children, session }) => {
                 sendMessage,
                 toggleMic,
                 toggleCam,
+                createScreenShare,
+                stopScreenShare,
                 myVideoRef,
                 remoteVideoRef,
                 messages,
                 mic,
                 cam,
+                screen,
                 call,
                 session,
                 remoteUserSession,

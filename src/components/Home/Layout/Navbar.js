@@ -3,6 +3,9 @@ import { Footer } from "./Footer";
 import { useContext } from 'react';
 import { SessionContext } from '../../../index'
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export const Navbar = () => {
 
   const { session } = useContext(SessionContext)
@@ -46,6 +49,7 @@ export const Navbar = () => {
 
   return (
     <div>
+      <ToastContainer autoClose={5000}/>
       
       <div className="flex flex-row py-8 justify-center space-x-16 items-center lg:hidden">
       <div><img src="/logo.png" width="144" height="55" alt="Logo"></img></div>

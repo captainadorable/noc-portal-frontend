@@ -28,7 +28,6 @@ export const SessionProvider = ({ children }) => {
     catch (err){
       console.log(err)
       setSession(null);
-      return
     }
     
   }

@@ -5,12 +5,15 @@ import { Call } from '../Call/Call';
 
 
 export const Teacher = () => {
-    const { createCall, myVideoRef, remoteVideoRef, call, setCall } = useContext(VideoChatContext);
+    const { createCall, myVideoRef, call } = useContext(VideoChatContext);
 
     const handleForm = (event) => {
         event.preventDefault();
-        createCall();
-        
+        const lesson = event.target.elements.lesson.value
+
+        if (lesson === "" ) return 
+
+        createCall(lesson.slice(0, 36));
     }
     if (call.active) return <Call></Call>
     else return (
@@ -19,7 +22,7 @@ export const Teacher = () => {
                 <div>Öğretmen</div>
                 <video ref={myVideoRef} autoPlay muted className='h-80 w-96'></video>
                 <form onSubmit={handleForm} className="flex flex-col space-y-4">
-                    <input name="connectid" type="text" placeholder="Yapılacak ders" className="border-2 shadow p-2" />
+                    <input name="lesson" type="text" placeholder="Yapılacak ders" className="border-2 shadow p-2" />
                     <button className="bg-blue-300 text-white p-4 rounded-lg">Arama Oluştur</button>
                 </form>
             </div>

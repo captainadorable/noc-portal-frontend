@@ -41,8 +41,8 @@ export const Navbar = () => {
       href: "/pricing",
     },
     {
-      name: "Giriş Yap",
-      href: "/login",
+      name: session ? "Profil" : "/profile",
+      href: session ? "/profile" : "/login",
       last: true
     }
   ];

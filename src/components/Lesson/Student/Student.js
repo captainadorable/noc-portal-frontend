@@ -9,13 +9,13 @@ import axios from 'axios'
 const socket = io(`${process.env.REACT_APP_SERVER_IP}`);
 
 export const Student = () => {
-    const { answerCall, myVideoRef, call, setCall } = useContext(VideoChatContext);
+    const { myVideoRef, call, sendJoinReq, joinReq } = useContext(VideoChatContext);
     const [calls, setCalls] = useState([]);
     
     const handleForm = (event) => {
         event.preventDefault();
 
-        let id = event.target.elements.connectid.value    
+        const id = event.target.id
 
         if(id === "") return
 
@@ -25,7 +25,7 @@ export const Student = () => {
     useEffect(() => {
         socket.on("validateRoom", (state, id) => {
             if (state === true) {
-                answerCall(id);
+                sendJoinReq(id);
             }
             else if (state === false) {
                 toast.error('Böyle bir oda bulunamadı!', {
@@ -39,7 +39,7 @@ export const Student = () => {
                     });
             }
             else if (state === "full") {
-                toast.error('Girmeye çalıştığınız oda dolu!', {
+                toast.error('Girmeye çalıştığın oda dolu!', {
                     position: "bottom-right",
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -61,14 +61,13 @@ export const Student = () => {
 
     useEffect(() => {
         getCalls()
-        
         const timer = setInterval(() => {
             getCalls()
         }, 1500)
-
         return () => clearInterval(timer)
     }, []);
 
+    if (joinReq) return <Layout><div>Öğretmen bekleniyor.</div></Layout>
     if (call.active) return <Call></Call>
     else return (
         <Layout>
@@ -76,16 +75,14 @@ export const Student = () => {
                 <div>Öğrenci</div>
                 <video ref={myVideoRef} autoPlay muted className='h-80 w-96'></video>
                 <div className="flex flex-col">
-                    {calls.length === 0 ? <div>Henüz bekleyen bir arama yok</div>: calls.map(call => (
-                        <>
-                            <div className='text-2xl'>ID: {call.id}</div>
-                        </>
+                    {calls.length === 0 ? <div>Henüz aktif bir öğretmen yok</div>: calls.map(call => (
+                        <form onSubmit={handleForm} key={call.id} id={call.id}>
+                            <div className='text-2xl'>Öğretmen: {call.users.find(user => user.id == call.id).session.name} - {call.teacherStatus}</div>
+                            <div className='text-2xl'>Ders: {call.lesson}</div>
+                            <button className='text-2xl px-4 py-2 bg-blue-300'>Katıl</button>
+                        </form>
                     ))}
                 </div>
-                <form onSubmit={handleForm} className="flex flex-col space-y-4">
-                    <input name="connectid" type="text" placeholder="ID" className="border-2 shadow p-2" />
-                    <button className="bg-blue-300 text-white p-4 rounded-lg">Ara</button>
-                </form>
             </div>
         </Layout>
     );

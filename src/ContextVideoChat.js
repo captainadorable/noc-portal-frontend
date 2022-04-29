@@ -19,7 +19,14 @@ const socket = io(`${process.env.REACT_APP_SERVER_IP}`);
 
 const ContextProvider = ({ children, session }) => {
     const [call, setCall] = useState({});
+    const [lesson, setLesson] = useState("");
     const [remoteUserSession, setRemoteUserSession] = useState({});
+
+    const [joinRequests, setJoinRequest] = useState([]); // For teacher
+    const [waitingReq, setWaitingReq] = useState(false);
+    const [connected, setConnected] = useState(false); 
+
+    const [elapsedTime, setElapsedTime] = useState();
 
     const [mic, setMic] = useState(true);
     const [cam, setCam] = useState(true);
@@ -121,7 +128,9 @@ const ContextProvider = ({ children, session }) => {
     };
 
     // Create call with random id.
-    const createCall = async () => {
+    const createCall = async (lesson) => {
+        setLesson(lesson);
+    
         console.log('createcall');
 
         setCall({ id: socket.id, active: true });
@@ -135,11 +144,17 @@ const ContextProvider = ({ children, session }) => {
         pc.onconnectionstatechange = (event) => {
             if (event.target.connectionState === 'disconnected') {
                 console.log('DISCONNECTED');
+                setConnected(false)
                 leaveCall();
             }
             if (event.target.connectionState === 'connected') {
                 console.log('CONNECTED');
+                setConnected(true);
                 getRemoteUserSession();
+                
+                socket.on("elapsedTime", time => {
+                    setElapsedTime(time);
+                })
             }
         };
 
@@ -153,7 +168,12 @@ const ContextProvider = ({ children, session }) => {
             type: offerDescription.type,
         };
 
-        socket.emit('offerDescription', { offer, userData: session });
+        socket.emit('offerDescription', { offer, userData: session, lesson });
+
+        socket.on("joinRequests", (reqs) => [
+            setJoinRequest(ex => reqs)
+        ]);
+
 
         socket.on('remoteDescription', (answer) => {
             console.log("BI-Remote-Desc", answer)
@@ -192,19 +212,30 @@ const ContextProvider = ({ children, session }) => {
                 pc.onconnectionstatechange = (event) => {
                     if (event.target.connectionState === 'disconnected') {
                         console.log('DISCONNECTED');
+                        setConnected(false)
                         leaveCall();
                     }
                     if (event.target.connectionState === 'connected') {
                         console.log('CONNECTED');
+                        setConnected(true)
+                        socket.on("elapsedTime", time => {
+                            setElapsedTime(time);
+                        });
                         getRemoteUserSession();
                     }
                 };
         
                 // Get calldata
                 socket.emit("getOfferDesc", (callId));
-                socket.on("getOfferDesc", async (offerDesc) => {
-                    console.log("Get-Offer-Desc", offerDesc)
+                socket.on("getOfferDesc", async (offerDesc, lesson) => {
+                    console.log("Get-Offer-Desc", offerDesc, lesson)
         
+                    setLesson(lesson);
+
+                    console.log(offerDesc)
+                    console.log(lesson)
+
+
                     // Get remote descripton and set it to peerconnection
                     const offerDescription = offerDesc;
                     await pc.setRemoteDescription(new RTCSessionDescription(offerDescription));
@@ -329,6 +360,30 @@ const ContextProvider = ({ children, session }) => {
             })
     };
 
+    const sendJoinReq = async (callId) => {
+        setWaitingReq(true);
+
+        socket.emit("sendReqToJoin", { callId, session })
+
+        socket.on("reqAnswered", state => {
+            console.log(state)
+            if (state) {
+                answerCall(callId)
+            }
+            else {
+                setWaitingReq(false)
+            }   
+        })
+    }
+
+    const handleRequest = (req, state) => {
+        socket.emit("answerReq", req, state);
+    }
+
+    const changeStatus = (status) => {
+        socket.emit("changeStatus", status)
+    }
+
     useEffect(() => {
         console.log(remoteUserSession)
     }, [remoteUserSession])
@@ -338,6 +393,7 @@ const ContextProvider = ({ children, session }) => {
             value={{
                 createCall,
                 answerCall,
+                sendJoinReq,
                 leaveCall,
                 refreshVideos,
                 setCall,
@@ -347,13 +403,19 @@ const ContextProvider = ({ children, session }) => {
                 toggleCam,
                 createScreenShare,
                 stopScreenShare,
+                handleRequest,
+                changeStatus,
                 myVideoRef,
                 remoteVideoRef,
                 messages,
+                lesson,
                 mic,
                 cam,
                 screen,
                 call,
+                connected,
+                elapsedTime,
+                joinRequests,
                 session,
                 remoteUserSession,
             }}

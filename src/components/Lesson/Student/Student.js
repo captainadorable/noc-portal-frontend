@@ -1,15 +1,15 @@
 import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { VideoChatContext } from '../../../ContextVideoChat';
+import { StudentContext } from '../../../context/Lesson/Student';
 import { Layout } from '../../Home/Layout';
-import { Call } from '../Call/Call';
+import { CallStudent } from '../Call/CallStudent';
 import { io } from 'socket.io-client';
 import axios from 'axios'
 
 const socket = io(`${process.env.REACT_APP_SERVER_IP}`);
 
 export const Student = () => {
-    const { myVideoRef, call, sendJoinReq, joinReq } = useContext(VideoChatContext);
+    const { myVideoRef, call, sendJoinReq, joinReq } = useContext(StudentContext);
     const [calls, setCalls] = useState([]);
     
     const handleForm = (event) => {
@@ -68,7 +68,7 @@ export const Student = () => {
     }, []);
 
     if (joinReq) return <Layout><div>Öğretmen bekleniyor.</div></Layout>
-    if (call.active) return <Call></Call>
+    if (call.active) return <CallStudent></CallStudent>
     else return (
         <Layout>
             <div className="flex flex-col items-center justify-center space-y-16">

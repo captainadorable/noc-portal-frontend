@@ -11,7 +11,6 @@ import { Lesson } from './pages/Lesson';
 import { Page404 } from './pages/Page404'
 import { Login } from './pages/Login';
 import { Profile } from './pages/Profile';
-import { StudentTest } from './components/Lesson/Student/StudentTest';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -50,7 +49,6 @@ root.render(
           <Route path="/lesson" element={<Lesson />}/>
           <Route path="/login" element={<Login />}/>
           <Route path="/profile" element={<Profile />}/>
-          <Route path="/test" element={<StudentTest />}/>
           <Route path="/*" element={<Page404 />}/>
       </Routes>
     </BrowserRouter>

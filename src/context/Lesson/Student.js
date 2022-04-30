@@ -1,7 +1,7 @@
 import React, { createContext, useState, useRef, useEffect } from 'react';
 import { io } from 'socket.io-client';
 
-const VideoChatContext = createContext();
+const StudentContext = createContext();
 
 const servers = {
     iceServers: [
@@ -17,7 +17,7 @@ const dc = pc.createDataChannel('chat'); // Data channel for chat
 
 const socket = io(`${process.env.REACT_APP_SERVER_IP}`);
 
-const ContextProvider = ({ children, session }) => {
+const ContextProviderStudent = ({ children, session }) => {
     const [call, setCall] = useState({});
     const [lesson, setLesson] = useState("");
     const [remoteUserSession, setRemoteUserSession] = useState({});
@@ -389,7 +389,7 @@ const ContextProvider = ({ children, session }) => {
     }, [remoteUserSession])
 
     return (
-        <VideoChatContext.Provider
+        <StudentContext.Provider
             value={{
                 createCall,
                 answerCall,
@@ -421,8 +421,8 @@ const ContextProvider = ({ children, session }) => {
             }}
         >
             {children}
-        </VideoChatContext.Provider>
+        </StudentContext.Provider>
     );
 };
 
-export { ContextProvider, VideoChatContext };
+export { ContextProviderStudent, StudentContext };

@@ -2,7 +2,8 @@ import { useContext } from 'react';
 import { Layout } from '../components/Home/Layout';
 
 import { SessionContext } from '../index';
-import { ContextProvider } from '../ContextVideoChat';
+import { ContextProviderStudent } from '../context/Lesson/Student';
+import { ContextProviderTeacher } from '../context/Lesson/Teacher';
 
 import { Student } from '../components/Lesson/Student/Student';
 import { Teacher } from '../components/Lesson/Teacher/Teacher';
@@ -14,14 +15,14 @@ export const Lesson = () => {
     //add ready statement
     else if (session.permission === 'teacher')
         return (
-            <ContextProvider session={session}>
+            <ContextProviderTeacher session={session}>
                 <Teacher />
-            </ContextProvider>
+            </ContextProviderTeacher>
         );
     else if (session.permission === 'student')
         return (
-            <ContextProvider session={session}>
+            <ContextProviderStudent session={session}>
                 <Student />
-            </ContextProvider>
+            </ContextProviderStudent>
         );
 };

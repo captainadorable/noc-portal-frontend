@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { VideoChatContext } from '../../../ContextVideoChat';
+import { TeacherContext } from '../../../context/Lesson/Teacher';
 
 import { IoMdArrowDropright } from 'react-icons/io';
 
@@ -21,7 +21,7 @@ const messageInputConfig = {
         'ring-4 ring-[#4e6394] block w-full py-2 pl-4 rounded-full outline-none placeholder-lg placeholder-[#181e2b]',
 };
 
-export const Call = () => {
+export const CallTeacher = () => {
     const {
         leaveCall,
         toggleMic,
@@ -45,7 +45,8 @@ export const Call = () => {
         mic,
         cam,
         screen,
-    } = useContext(VideoChatContext);
+    } = useContext(TeacherContext);
+    
     const messagesRef = useRef();
     const [onCooldown, setOnCooldown] = useState(false);
     const [time, setTime] = useState("");

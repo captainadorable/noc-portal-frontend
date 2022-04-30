@@ -1,11 +1,11 @@
 import { useContext } from 'react';
-import { VideoChatContext } from '../../../ContextVideoChat';
+import { TeacherContext } from '../../../context/Lesson/Teacher';
 import { Layout } from '../../Home/Layout';
-import { Call } from '../Call/Call';
+import { CallTeacher } from '../Call/CallTeacher';
 
 
 export const Teacher = () => {
-    const { createCall, myVideoRef, call } = useContext(VideoChatContext);
+    const { createCall, myVideoRef, call } = useContext(TeacherContext);
 
     const handleForm = (event) => {
         event.preventDefault();
@@ -15,7 +15,7 @@ export const Teacher = () => {
 
         createCall(lesson.slice(0, 36));
     }
-    if (call.active) return <Call></Call>
+    if (call.active) return <CallTeacher></CallTeacher>
     else return (
         <Layout>
             <div className="flex flex-col items-center justify-center space-y-16">

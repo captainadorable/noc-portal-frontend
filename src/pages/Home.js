@@ -1,12 +1,25 @@
-import { Layout } from "../components/Home/Layout";
-import { Hero } from "../components/Home/Hero/index"
-import { Hero1 } from "../components/Home/Hero/index1"
+import { Teacher } from "../components/Home/Teacher/Teacher"
+import { Student } from "../components/Home/Student/Student"
+import { Anonymous } from "../components/Home/Anonymous/Anonymous"
+import { SessionContext } from ".."
+import { useContext } from "react"
+
 
 export const Home = () => {
-    return(
-        <Layout>
-            <Hero/>
-            <Hero1/>
-        </Layout>
-    );
+    const { session } = useContext(SessionContext)
+    if(session?.permission === "teacher"){
+        return(
+            <Teacher session={session}/>
+        )
+    }
+    else if(session?.permission === "student"){
+        return(
+            <Student session={session}/>  
+        )
+    }
+    else {
+        return(
+            <Anonymous />
+        )
+    }
 }

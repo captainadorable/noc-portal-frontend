@@ -10,29 +10,30 @@
 body {
     font-family: 'Red Hat Display';
     background-color: #f7eee5;
-}
+    overflow: overlay;
+  }
 
   /* width */
-  ::-webkit-scrollbar {
+  #chat::-webkit-scrollbar {
     width: 10px;
   }
   
   /* Track */
-  ::-webkit-scrollbar-track {
+  #chat::-webkit-scrollbar-track {
     background: #121722; 
   }
    
   /* Handle */
-  ::-webkit-scrollbar-thumb {
+  #chat::-webkit-scrollbar-thumb {
     background: #454a4d; 
   }
   
   /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
+  #chat::-webkit-scrollbar-thumb:hover {
     background: #575e62; 
   }
 
-  video::-webkit-media-controls-fullscreen-button {}
+video::-webkit-media-controls-fullscreen-button {}
 video::-webkit-media-controls-play-button {display: none;}
 video::-webkit-media-controls-timeline {display: none;}
 video::-webkit-media-controls-current-time-display{display: none;}
@@ -40,3 +41,36 @@ video::-webkit-media-controls-time-remaining-display {display: none;}
 video::-webkit-media-controls-mute-button {display: none;}
 video::-webkit-media-controls-toggle-closed-captions-button {display: none;}
 video::-webkit-media-controls-volume-slider {display: none;}
+
+#in {
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-name: inradius;
+}
+@keyframes inradius {
+  from {
+      transform: rotate(0deg);
+  }
+  to {
+      transform: rotate(360deg);
+  }
+}
+::-webkit-scrollbar {
+  width: 15px;
+ 
+}
+
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0);
+}
+::-webkit-scrollbar-corner {
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffffff; 
+  border-radius: 12px; 
+
+}
+

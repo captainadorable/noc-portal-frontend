@@ -86,7 +86,7 @@ export const CallStudent = () => {
         <div className="w-full h-screen flex">
             <div className={connected ? "w-10/12 grid grid-rows-3 place-items-center space-y-6 justify-center pt-10" : "w-10/12 grid grid-rows-4 place-items-center space-y-6 justify-center pt-10"}>
                 <div className="flex flex-row items-center justify-center space-x-6">
-                    <img src="logo.png" alt="Logo" className="w-48" />
+                    <img src="/images/logo.png" alt="Logo" className="w-48 hover:cursor-pointer" onClick={() => window.location.href = "/home"}/>
                     <IoMdArrowDropright size={70} fill="#5167a6" />
                     <h1 className="flex items-center text-2xl font-bol text-[#5064a7]">Ders: {lesson} </h1>
                     <div>Geçen süre: {time}</div>
@@ -144,11 +144,12 @@ export const CallStudent = () => {
                     )}
                 </div>
 
-                <div className="h-4/6 flex flex-col space-y-1">
+                <div className="h-4/6 flex flex-col space-y-1" >
                     <h1 className=" text-center text-white text-lg">Chat</h1>
                     <div
                         className="focus:outline-none h-full block bg-white border-4 border-[#4e6394] rounded-lg p-4 overflow-y-auto"
                         ref={messagesRef}
+                        id="chat"
                     >
                         {messages.map((message) => (
                             <div className="w-full">

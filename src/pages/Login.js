@@ -12,15 +12,17 @@ export const Login = () => {
 
     return(
         <Layout>
-            <div className="flex flex-col items-center pt-48 space-y-8">
-                <div className="text-4xl">Giriş Yap</div>
-                <GoogleLogin 
-                    clientId={process.env.REACT_APP_GOOGLE_CLIENT} //procces.env.GOOGLE_CLIENT_ID
-                    buttonText="Google ile giriş yap"
-                    onSuccess={handleLogin}
-                    onFailure={handleLogin}
-                    cookiePolicy={'single_host_origin'}
-                />
+            <div className=" grid place-items-center space-y-8 h-screen">
+                <div className="flex flex-col items-center space-y-10">
+                    <div className="text-4xl text-[#3b82f6]">Giriş Yap</div>
+                    <GoogleLogin 
+                        clientId={process.env.REACT_APP_GOOGLE_CLIENT} //procces.env.GOOGLE_CLIENT_ID
+                        buttonText="Google ile giriş yap"
+                        onSuccess={handleLogin}
+                        onFailure={handleLogin}
+                        cookiePolicy={'single_host_origin'}
+                    />
+                    </div>
             </div>
         </Layout>
     );

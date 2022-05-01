@@ -1,14 +1,12 @@
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 
-export const Layout = ({ children }) => {
+export const Layout = (props) => {
     return (
-        <div>
+        <div className="bg-[#344591]">
             <Navbar />
-            {children}
-            <div  className="pt-24">
-                <Footer/>
-            </div>
+                {props.children} 
+            <Footer bg="bg-[#344591]"/>
         </div>
     )
 };

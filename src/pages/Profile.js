@@ -20,20 +20,6 @@ export const Profile = () => {
         window.location.replace('/login');
         return;
     }
-    const Status_card = (props) => {
-        return (
-        <div className="flex flex-col space-y-2">
-            <h1 className={`text-3xl ${props.color1} text-center`}>
-                {props.name}
-            </h1>
-            <h1 className="text-2xl ">{props.ders} tane <span className="text-white">ders</span> </h1>
-            <h1 className="text-xl text-center">Toplam</h1>
-            <h1 className={`text-center text-4xl ${props.color2}`}>{props.dk} dk</h1>
-         </div>
-
-        )
-
-    }
     
     return (
         <Layout>
@@ -45,25 +31,25 @@ export const Profile = () => {
                             <img src={session.profilePicture} alt="" className="w-full rounded-full" />
                         </div>
                         <div className="w-7/12 flex-col flex space-y-5 justify-center text-white">
-                            <h1 className="text-2xl">{session.name}</h1>
-                            <p className="text-lg">{text[0]}</p>
+                            <h1 className="text-2xl">{session.name} ({session.username})</h1>
+                            <p className="text-lg">{session.profileBio ? session.profileBio : `Merhaba ben, ${session.name}`}</p>
                         </div>
                     </div>
                     <div className="flex flex-col space-y-10 justify-center items-center">
                         <div className="grid grid-cols-2 gap-4">
                             <div className="bg-[#182044] p-6 rounded-xl flex-col flex text-white">
-                                <h1 className="text-2xl">{session.name}, </h1>
+                                <h1 className="text-2xl">{session.username}, </h1>
                                 <div className="flex flex-row space-x-1">
                                     <h1 className="items-center text-xl flex">Bu zamana kadar toplam </h1>
-                                    <h1 className="text-4xl text-[#3b82f6]"> 340dk </h1>
+                                    <h1 className="text-4xl text-[#3b82f6]"> {Math.floor(session.totalLessonTime / 60)} dakika </h1>
                                 </div>
                                 <h1 className="text-xl"> ders yaptın</h1>
                             </div>
                             <div className="bg-[#182044] p-6 rounded-xl flex-col flex text-white">
-                                <h1 className="text-2xl">{session.name}, </h1>
+                                <h1 className="text-2xl">{session.username}, </h1>
                                 <div className="flex flex-row space-x-1">
                                     <h1 className="items-center text-xl flex">Bu zamana kadar toplam </h1>
-                                    <h1 className="text-4xl text-[#a7d129]"> 242 tane </h1>
+                                    <h1 className="text-4xl text-[#a7d129]"> {session.totalLessons} tane </h1>
                                 </div>
                                 <h1 className="text-xl"> ders yaptın</h1>
                             </div>
@@ -71,7 +57,7 @@ export const Profile = () => {
                     </div>
                 </div>
                 <div className="flex flex-row space-x-5">
-                    <button onClick={() => console.log("dur kanka yapmadık daha amk")} className="bg-blue-400 px-4 py-2 w-24 text-white rounded-lg">
+                    <button onClick={() => window.location.href = "/editProfile"} className="bg-blue-400 px-4 py-2 w-24 text-white rounded-lg">
                         Düzenle
                     </button>
                     <button onClick={logOutHandler} className="bg-[#e27178] px-4 py-2 w-24 text-white rounded-lg">

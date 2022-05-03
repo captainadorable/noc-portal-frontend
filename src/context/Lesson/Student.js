@@ -1,5 +1,7 @@
 import React, { createContext, useState, useRef, useEffect } from 'react';
 import { io } from 'socket.io-client';
+import { toast } from 'react-toastify';
+
 
 const StudentContext = createContext();
 
@@ -201,7 +203,8 @@ const ContextProviderStudent = ({ children, session }) => {
 
         socket.emit("validateRoom", callId)
         socket.on("validateRoom", state => {
-            if (state) {
+            console.log("validate amk", state)
+            if (state === true) {
                 setCall({ id: callId, active: true });
         
 
@@ -274,10 +277,41 @@ const ContextProviderStudent = ({ children, session }) => {
                     window.location.reload()
                 });
             }
-            else {
-                console.log("Room not found")
-                window.location.replace("/lesson")
-                return;
+            if (state === "full") {
+                toast.error('Girmeye çalıştığın oda dolu!', {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                return
+            }
+            if (state === "teacherNotAvailable") {
+                toast.error('Girmeye çalıştığın oda dolu!', {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                return
+            }
+            if (state === false) {
+                toast.error('Girmeye çalıştığın oda bulunamadı!', {
+                    position: "bottom-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                return
             }
         })
 

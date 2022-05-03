@@ -1,5 +1,7 @@
 import { Layout } from "../Layout"
+import { useState } from 'react';
 export const Anonymous = () => {
+    const [value , Setvalue] = useState(1);
     const Text = [
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -45,13 +47,31 @@ export const Anonymous = () => {
                                 </p>
                             </div>
                         </div>
-                        <div className="flex flex-col space-y-8">
+                        <div className="flex flex-col space-y-12">
                             <h1 className="text-center text-white text-4xl">
                                 Nasıl kullanılır
                             </h1>
-                            <div className="flex flex-col space-y-4">
-                                <div className="flex flex-col ">
-
+                            <div className="flex flex-row items-center space-x-12 items">
+                                <div className="w-1/2 flex justify-center flex-col space-y-8">
+                                    <h1 className={`text-lg border-l-4 transistion delay-100 duration-100 ${value == 1 ? "border-[#3b82f6] border-l-8 text-white" : "text-[#999999] border-[#182044]"}  pl-4 `}  onClick={() => Setvalue(1)}>
+                                        <p>
+                                            {Text[0]}
+                                        </p>
+                                    </h1>
+                                    <h1 className={`text-lg border-l-4 transistion delay-100 duration-100 ${value == 2 ? "border-[#3b82f6] border-l-8 text-white" : "text-[#999999] border-[#182044]"}  pl-4 `} onClick={() => Setvalue(2)}>
+                                        <p>
+                                            {Text[0]}
+                                        </p>
+                                    </h1>
+                                    <h1 className={`text-lg border-l-4 transistion delay-100 duration-100 ${value == 3 ? "border-[#3b82f6] border-l-8 text-white" : "text-[#999999] border-[#182044]"}  pl-4 `} onClick={() => Setvalue(3)}>
+                                        <p>
+                                            {Text[0]}
+                                        </p>
+                                    </h1>
+                                </div>
+                                <div className="w-1/2  flex justify-center p-5 ">
+                                    <img  className="bg-cover border-2 rounded-2xl" 
+                                    src={value == 1 ? "" : "" || value == 2 ? "" : "" || value == 3 ? "" : ""} alt="" />
                                 </div>
                             </div>
                         </div>

@@ -12,6 +12,7 @@ import { Page404 } from './pages/Page404';
 import { Login } from './pages/Login';
 import { Profile } from './pages/Profile';
 import { LoadingPage } from './pages/Loading';
+import { EditProfile } from './pages/EditProfile';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -49,6 +50,7 @@ const Index = () => {
                     <Route path="/lesson" element={<Lesson />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/editProfile" element={<EditProfile />} />
                     <Route path="/*" element={<Page404 />} />
                 </Routes>
             </BrowserRouter>

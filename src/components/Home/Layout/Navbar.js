@@ -26,7 +26,6 @@ export const Navbar = () => {
            <div className={`z-50 transition delay-75 fixed inset-x-0  flex flex-row justify-between px-16 shadow-xl ${value ? "py-4 bg-[#344591]" : "py-2 bg-[#f7eee5]" }`}>
                 <a href="/home" className="pt-1 lg:w-[150px] lg:h-[53px] w-[200px] h-[70px]"><Logosvg fill="#7a94f3"/></a>
                 <div className="flex flex-row space-x-4 items-center text-xl">
-                    <Navbar_links href="https://nonofficialcompany.com" name="Ana Sayfa" />
                     <Navbar_links href="/pomodoro" name="Pomodoro" />
                     <Navbar_links href="/lesson" name="Ders" />
                     <Navbar_links href="/pricing" name="Paketler" />

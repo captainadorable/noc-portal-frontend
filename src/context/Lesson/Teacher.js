@@ -25,7 +25,7 @@ const ContextProviderTeacher = ({ children, session }) => {
     const [joinRequests, setJoinRequest] = useState([]); // For teacher
     const [connected, setConnected] = useState(false); 
 
-    const [elapsedTime, setElapsedTime] = useState();
+    const [elapsedTime, setElapsedTime] = useState(0);
 
     const [mic, setMic] = useState(true);
     const [cam, setCam] = useState(true);
@@ -299,8 +299,11 @@ const ContextProviderTeacher = ({ children, session }) => {
 
     const createScreenShare = async () => {
         
-
         const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: { cursor: 'always' }, audio:true, })
+
+        const videotrack = myStream.getTracks().find((track) => track.kind === 'video');
+        if (!screen) videotrack.enabled = true; setCam(true)
+        
         setScreen(true)
         setMyScreenStream(screenStream)
 

@@ -42,7 +42,7 @@ export const Student = () => {
             if (state === true) {
                 sendJoinReq(id);
             }
-            else if (state === false) {
+            if (state === false) {
                 toast.error('Böyle bir oda bulunamadı!', {
                     position: "bottom-right",
                     autoClose: 5000,
@@ -53,7 +53,7 @@ export const Student = () => {
                     progress: undefined,
                     });
             }
-            else if (state === "full") {
+            if (state === "full") {
                 toast.error('Girmeye çalıştığın oda dolu!', {
                     position: "bottom-right",
                     autoClose: 5000,
@@ -64,7 +64,7 @@ export const Student = () => {
                     progress: undefined,
                     });
             }
-            else if (state === "teacherUnavailable") {
+            if (state === "teacherUnavailable") {
                 toast.error('Öğretmen hazır değil!', {
                     position: "bottom-right",
                     autoClose: 5000,
